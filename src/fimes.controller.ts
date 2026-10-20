@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
 import { FilmesService } from "./filmes.service.js";
 import type { FilmesInterface } from "./filmes/filmes-interface.js";
 import { CriarFilmesDto } from "./filmes/dto/criar-filme.dto.js";
@@ -20,17 +20,17 @@ export class FilmesController{
     }
 
     @Get(':id')
-    buscaPorId(@Param("id") id: number): FilmesInterface | undefined {
-        return this.filmesService.buscaPorId(+id)
+    buscaPorId(@Param("id", ParseIntPipe) id: number): FilmesInterface | undefined {
+        return this.filmesService.buscaPorId(id)
     }
 
     @Put(':id')
-    atualizarFilme(@Param("id") id: number, @Body() dados: Omit<FilmesInterface, 'id'>): FilmesInterface | undefined {
-        return this.filmesService.atualizarFilme(+id, dados)
+    atualizarFilme(@Param("id", ParseIntPipe) id: number, @Body() dados: Omit<FilmesInterface, 'id'>): FilmesInterface | undefined {
+        return this.filmesService.atualizarFilme(id, dados)
     }
 
     @Delete(':id')
-    deletarFilme(@Param("id") id: number){
-        return this.filmesService.deletarFilme(+id)
+    deletarFilme(@Param("id", ParseIntPipe) id: number){
+        return this.filmesService.deletarFilme(id)
     }
 }
